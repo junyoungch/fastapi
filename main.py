@@ -33,9 +33,10 @@ async def read_drone_state(drone_id: str, state: Union[int, None] = None):
 @app.get("/send_msg")
 async def send_msg(state: Union[int, None]=None):
     if state == 0:
-        send.data
-    res = requests.post(url+uri, headers=header, data = json.dumps(send.data))
-    return res
+        ditto = send.data
+    requests.post(url+uri, headers=header, data = json.dumps(ditto))
+    return ditto
+
 
 # @app.get("/drones/recon-drone/{drone_state}")
 # async def read_drone_state(drone_state: int = 0):
