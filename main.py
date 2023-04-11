@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 import requests, json
-from sens.sens import send, url, uri, header
+from sens.sens import send_sms_area1, send_sms_area2, send_sms_area3, url, uri, header
 
 app = FastAPI()
 
@@ -33,7 +33,11 @@ async def read_drone_state(drone_id: str, state: Union[int, None] = None):
 @app.get("/send_msg")
 async def send_msg(state: Union[int, None]=None):
     if state == 0:
-        ditto = send.data
+        ditto = send_sms_area1.data
+    if state == 1:
+        ditto = send_sms_area2.data
+    if state == 2:
+        ditto = send_sms_area3.data
     requests.post(url+uri, headers=header, data = json.dumps(ditto))
     return ditto
 
