@@ -3,6 +3,9 @@ from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+import requests, json
+from sens.sens import send, url, uri, header
+
 app = FastAPI()
 
 class Recon_Drone(BaseModel):
@@ -22,8 +25,17 @@ async def read_drone_state(drone_id: str, state: Union[int, None] = None):
     if state == 1:
         drone_state = {"드론 나는중"}
        # recon = {drone_name, "fly"}
+    if state == 2:
+        drone_state = {"집으로 복귀중"}
     recon = {"drone_name": drone_id, "state": drone_state}
     return recon
+
+@app.get("/send_msg")
+async def send_msg(state: Union[int, None]=None):
+    if state == 0:
+        send.data
+    res = requests.post(url+uri, headers=header, data = json.dumps(send.data))
+    return res
 
 # @app.get("/drones/recon-drone/{drone_state}")
 # async def read_drone_state(drone_state: int = 0):
