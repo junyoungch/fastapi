@@ -14,12 +14,13 @@ class Recon_Drone(BaseModel):
     state = int("0")
 
 @app.get("/")
-def read_root():
+async def read_root():
     return {"Welcome to gabozaing"}
 
 @app.get("/drones/{drone_id}")
 async def read_drone_state(drone_id: str, state: Union[int, None] = None):
    # drone_name = drone_id
+    drone_state = {"?"}
     if state == 0:
         drone_state = {"드론 쉬는중"}
         #recon = {drone_name, "쉼"}
