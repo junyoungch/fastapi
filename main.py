@@ -1,7 +1,7 @@
 from typing import Union
 
 from fastapi import FastAPI, Query
-from pydantic import BaseModel
+
 
 import requests, json
 
@@ -16,36 +16,6 @@ camera_status = "NO_DETECTION"
 @app.get("/")
 async def read_root():
     return {"Welcome to gabozaing"}
-
-@app.get("/drones/{drone_id}")
-async def read_drone_state(drone_id: str, state: Union[int, None] = None):
-   # drone_name = drone_id
-    drone_state = {"?"}
-    if state == 0:
-        drone_state = {"드론 쉬는중"}
-        #recon = {drone_name, "쉼"}
-    if state == 1:
-        drone_state = {"드론 나는중"}
-       # recon = {drone_name, "fly"}
-    if state == 2:
-        drone_state = {"집으로 복귀중"}
-    recon = {"drone_name": drone_id, "state": drone_state}
-    return recon
-
-@app.get("/send_msg")
-async def send_msg(state: Union[int, None]=None):
-    if state == 0 or state == 1 or state == 2:
-        if state == 0:
-            ditto = send_sms_area1.data
-        if state == 1:
-            ditto = send_sms_area2.data
-        if state == 2:
-            ditto = send_sms_area3.data
-        requests.post(url+uri, headers=header, data = json.dumps(ditto))
-        send_message = "관리자에게 메시지를 전송을 성공하였습니다."
-    else:
-        send_message = "관리자에게 메시지 전송을 실패하였습니다."
-    return send_message
 
 # DRONE 상태 변경 API
 @app.get("/PATROL_DRONE")
@@ -95,3 +65,19 @@ async def change_WARNING_status(STATUS: str = Query(None)):
             warning_status = "다시 입력해주세요."
 
     return {"WARNING_STATUS": warning_status}
+
+# 관리자에게 메시지 전송
+@app.get("/send_msg")
+async def send_msg(state: Union[int, None]=None):
+    if state == 0 or state == 1 or state == 2:
+        if state == 0:
+            ditto = send_sms_area1.data
+        if state == 1:
+            ditto = send_sms_area2.data
+        if state == 2:
+            ditto = send_sms_area3.data
+        requests.post(url+uri, headers=header, data = json.dumps(ditto))
+        send_message = "관리자에게 메시지를 전송을 성공하였습니다."
+    else:
+        send_message = "관리자에게 메시지 전송을 실패하였습니다."
+    return send_message
