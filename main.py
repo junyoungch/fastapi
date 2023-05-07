@@ -27,16 +27,31 @@ async def change_PATROL_status(STATUS: str = Query(None)):
         # 파라미터 값이 전달된 경우, patrol상태 변경
         if STATUS.upper() == "PATROL_STANDBY":
             StateInfo.patrol_status = "PATROL_STANDBY"
+
         elif STATUS.upper() == "PATROL_TAKEOFF":
-            StateInfo.patrol_status = "PATROL_TAKEOFF"    
+            StateInfo.patrol_status = "PATROL_TAKEOFF" 
+
         elif STATUS.upper() == "PATROL_MOVE1":
             StateInfo.patrol_status = "PATROL_MOVE1"
         elif STATUS.upper() == "PATROL_MOVE2":
             StateInfo.patrol_status = "PATROL_MOVE2"
         elif STATUS.upper() == "PATROL_MOVE3":
             StateInfo.patrol_status = "PATROL_MOVE3"
+        elif STATUS.upper() == "PATROL_MOVE4":
+            StateInfo.patrol_status = "PATROL_MOVE4"
+
+        elif STATUS.upper() == "PATROL_CAPTURE1":
+            StateInfo.patrol_status = "PATROL_CAPTURE1"
+        elif STATUS.upper() == "PATROL_CAPTURE2":
+            StateInfo.patrol_status = "PATROL_CAPTURE2"
+        elif STATUS.upper() == "PATROL_CAPTURE3":
+            StateInfo.patrol_status = "PATROL_CAPTURE3"
+        elif STATUS.upper() == "PATROL_CAPTURE4":
+            StateInfo.patrol_status = "PATROL_CAPTURE4"
+
         elif STATUS.upper() == "PATROL_DETECTED":
             StateInfo.patrol_status = "PATROL_DETECTED"
+
         elif STATUS.upper() == "PATROL_RETURN":
             StateInfo.patrol_status = "PATROL_RETURN"
             
@@ -69,7 +84,7 @@ async def change_WARNING_status(STATUS: str = Query(None)):
 async def change_CAMERA_status(STATUS: str = Query(None)):
     global StateInfo
     if STATUS is not None:
-        # 파라미터 값이 전달된 경우, camera상태 변경
+        # 파라미터 값이 전달된 경우, detect상태 변경
         if STATUS.upper() == "DETECT_POINT1":
             StateInfo.detect_status = "DETECT_POINT1"
         elif STATUS.upper() == "DETECT_POINT2":
