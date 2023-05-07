@@ -121,12 +121,12 @@ async def get_gps_value(GPS_VALUE: str = Query(None)):
 async def send_msg(state: Union[int, None]=None):
     if state == 0 or state == 1 or state == 2:
         if state == 0:
-            ditto = send_sms_area1.data
+            send = send_sms_area1.data
         if state == 1:
-            ditto = send_sms_area2.data
+            send = send_sms_area2.data
         if state == 2:
-            ditto = send_sms_area3.data
-        requests.post(url+uri, headers=header, data = json.dumps(ditto))
+            send = send_sms_area3.data
+        requests.post(url+uri, headers=header, data = json.dumps(send))
         send_message = "관리자에게 메시지를 전송을 성공하였습니다."
     else:
         send_message = "관리자에게 메시지 전송을 실패하였습니다."
