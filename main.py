@@ -74,8 +74,19 @@ async def change_CAMERA_status(STATUS: str = Query(None)):
             StateInfo.detect_status = "DETECT_POINT1"
         elif STATUS.upper() == "DETECT_POINT2":
             StateInfo.detect_status = "DETECT_POINT2"
+        elif STATUS.upper() == "DETECT_POINT3":
+            StateInfo.detect_status = "DETECT_POINT3"
+        elif STATUS.upper() == "DETECT_POINT4":
+            StateInfo.detect_status = "DETECT_POINT4"
+
         elif STATUS.upper() == "DETECT_NO_POINT1":
-            StateInfo.camera_status = "DETECT_NO_POINT1"    
+            StateInfo.camera_status = "DETECT_NO_POINT1" 
+        elif STATUS.upper() == "DETECT_NO_POINT2":
+            StateInfo.camera_status = "DETECT_NO_POINT2"    
+        elif STATUS.upper() == "DETECT_NO_POINT3":
+            StateInfo.camera_status = "DETECT_NO_POINT3"    
+        elif STATUS.upper() == "DETECT_NO_POINT4":
+            StateInfo.camera_status = "DETECT_NO_POINT4"       
         else:
             StateInfo.camera_status = "다시 입력해주세요."
 
