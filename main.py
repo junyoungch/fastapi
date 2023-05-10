@@ -5,7 +5,7 @@ from fastapi import FastAPI, Query
 
 import requests, json
 
-from sens.sens import send_sms_area1, send_sms_area2, send_sms_area3, url, uri, header
+from sens.sens import url, uri, header, send_sms_area#, send_sms_area2, send_sms_area3 
 
 app = FastAPI()
 
@@ -13,7 +13,7 @@ class StateInfo:
     patrol_status = "PATROL_STANDBY"
     warning_status = "WARNING_STANDBY"
     detect_status = "DETECT_NO_POINT1"
-    gps_coordinate = "0"
+    gps_coordinate = ""
 
 @app.get("/")
 async def read_root():
@@ -61,6 +61,7 @@ async def change_PATROL_status(STATUS: str = Query(None)):
     return {"PATROL_STATUS": StateInfo.patrol_status}
 
 # WARNING_DRONE 상태변경
+
 @app.get("/StateInfo/WARNING_STATUS")
 async def change_WARNING_status(STATUS: str = Query(None)):
     global warning_status
@@ -81,7 +82,7 @@ async def change_WARNING_status(STATUS: str = Query(None)):
 
 # 
 @app.get("/StateInfo/DETECT_STATUS")
-async def change_CAMERA_status(STATUS: str = Query(None)):
+async def change_detect_status(STATUS: str = Query(None)):
     global StateInfo
     if STATUS is not None:
         # 파라미터 값이 전달된 경우, detect상태 변경
@@ -95,17 +96,17 @@ async def change_CAMERA_status(STATUS: str = Query(None)):
             StateInfo.detect_status = "DETECT_POINT4"
 
         elif STATUS.upper() == "DETECT_NO_POINT1":
-            StateInfo.camera_status = "DETECT_NO_POINT1" 
+            StateInfo.detect_status = "DETECT_NO_POINT1" 
         elif STATUS.upper() == "DETECT_NO_POINT2":
-            StateInfo.camera_status = "DETECT_NO_POINT2"    
+            StateInfo.detect_status = "DETECT_NO_POINT2"    
         elif STATUS.upper() == "DETECT_NO_POINT3":
-            StateInfo.camera_status = "DETECT_NO_POINT3"    
+            StateInfo.detect_status = "DETECT_NO_POINT3"    
         elif STATUS.upper() == "DETECT_NO_POINT4":
-            StateInfo.camera_status = "DETECT_NO_POINT4"       
+            StateInfo.detect_status = "DETECT_NO_POINT4"       
         else:
-            StateInfo.camera_status = "다시 입력해주세요."
+            StateInfo.detect_status = "다시 입력해주세요."
 
-    return {"DETECTION_STATUS": StateInfo.camera_status}
+    return {"DETECT_STATUS": StateInfo.detect_status}
 
 #GPS좌표 받아오기
 @app.get("/StateInfo/GPS_COORDINATE")
@@ -115,18 +116,27 @@ async def get_gps_value(GPS_VALUE: str = Query(None)):
         StateInfo.gps_coordinate = GPS_VALUE
 
     return {"GPS_VALUE":StateInfo.gps_coordinate}
-    
+
+@app.get("/accident")
+async def send_acc(accident: str = Query(None)):
+    acc = accident
+    return acc
+
 # 관리자에게 메시지 전송
 @app.get("/send_msg")
-async def send_msg(state: Union[int, None]=None):
-    if state == 0 or state == 1 or state == 2:
-        if state == 0:
-            send = send_sms_area1.data
-        if state == 1:
-            send = send_sms_area2.data
-        if state == 2:
-            send = send_sms_area3.data
-        requests.post(url+uri, headers=header, data = json.dumps(send))
+async def send_msg(point: int = Query(None), accident: str = Query(None)):
+    if point == 1 or 2 or 3 or 4:
+        sms = send_sms_area()
+        if point == 1:
+            sms.data["content"] = "1구역에서 " + accident + " 사고발생"
+        if point == 2:
+            sms.data["content"] = "2구역에서 " + accident + " 사고발생"
+        if point == 3:
+            sms.data["content"] = "3구역에서 " + accident + " 사고발생"
+        if point == 4:
+            sms.data["content"] = "4구역에서 " + accident + " 사고발생"
+
+        requests.post(url+uri, headers=header, data = json.dumps(sms.data))
         send_message = "관리자에게 메시지를 전송을 성공하였습니다."
     else:
         send_message = "관리자에게 메시지 전송을 실패하였습니다."
