@@ -124,16 +124,16 @@ async def send_acc(accident: str = Query(None)):
 
 # 관리자에게 메시지 전송
 @app.get("/send_msg")
-async def send_msg(point: int = Query(None), accident: str = Query(None)):
-    if point == 1 or 2 or 3 or 4:
+async def send_msg(point: str = Query(None), accident: str = Query(None)):
+    if point == "point1" or "point2" or "point3" or "point4":
         sms = send_sms_area()
-        if point == 1:
+        if point == "point1":
             sms.data["content"] = "1구역에서 " + accident + " 사고발생"
-        if point == 2:
+        if point == "point2":
             sms.data["content"] = "2구역에서 " + accident + " 사고발생"
-        if point == 3:
+        if point == "point3":
             sms.data["content"] = "3구역에서 " + accident + " 사고발생"
-        if point == 4:
+        if point == "point4":
             sms.data["content"] = "4구역에서 " + accident + " 사고발생"
 
         requests.post(url+uri, headers=header, data = json.dumps(sms.data))
